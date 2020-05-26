@@ -8,7 +8,7 @@ specializations.
 
 from djangoplugins.point import PluginPoint
 
-from projectroles.plugins import ProjectAppPluginPoint
+from projectroles.plugins import ProjectAppPluginPoint, SiteAppPluginPoint
 from .urls import urlpatterns
 
 
@@ -55,3 +55,28 @@ class BackgroundJobsPluginPoint(PluginPoint):
     #: Mapping from job specialization name to specialization class
     # (OneToOneField "inheritance").
     job_specs = {}
+
+
+class SiteAppPlugin(SiteAppPluginPoint):
+    """Projectroles plugin for registering the app"""
+
+    #: Name (slug-safe, used in URLs)
+    name = 'sitebgjobs'
+
+    #: Title (used in templates)
+    title = 'Global Background Jobs'
+
+    #: App URLs (will be included in settings by djangoplugins)
+    urls = urlpatterns
+
+    #: FontAwesome icon ID string
+    icon = 'tasks'
+
+    #: Description string
+    description = 'Global background jobs'
+
+    #: Entry point URL ID
+    entry_point_url_id = 'bgjobs:site_list'
+
+    #: Required permission for displaying the app
+    app_permission = 'bgjobs:bgjobs.site_view_data'
