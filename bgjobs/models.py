@@ -9,7 +9,7 @@ Further, the ``BackgroundJobLogEntry`` model allows to manage background log
 entries for your background jobs.  Use the ``JobModelMessageMixin`` for adding
 helper functions for applying state changes and adding log messages.
 """
-
+import contextlib
 import uuid as uuid_object
 
 from django.conf import settings
@@ -78,9 +78,10 @@ class BackgroundJob(models.Model):
     sodar_uuid = models.UUIDField(
         default=uuid_object.uuid4, unique=True, help_text='BG Job SODAR UUID'
     )
-    #: The project that this job belongs to.
+    #: The project that this job belongs to.  Set to ``None`` for global background
+    #: jobs.
     project = models.ForeignKey(
-        Project, help_text='Project in which this objects belongs'
+        Project, null=True, help_text='Project in which this objects belongs'
     )
     #: The user initiating the job.
     user = models.ForeignKey(
@@ -151,6 +152,18 @@ class JobModelMessageMixin:
     """
 
     task_desc = None
+
+    @contextlib.contextmanager
+    def marks(self):
+        """Return a context manager that allows to run tasks between start and success/error marks."""
+        self.mark_start()
+        try:
+            yield
+        except Exception as e:
+            self.mark_error("Error: %s" % e)
+            raise
+        else:
+            self.mark_success()
 
     def mark_start(self):
         """Mark the export job as started."""
