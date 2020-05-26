@@ -19,6 +19,18 @@ from .models import BackgroundJob
 DEFAULT_PAGINATION = 15
 
 
+class GlobalBackgroundJobView(
+    LoggedInPermissionMixin, ListView,
+):
+    permission_required = 'bgjobs.view_site_bgjobs'
+    template_name = 'bgjobs/site_backgroundjobs.html'
+    model = BackgroundJob
+    paginate_by = getattr(settings, 'BGJOBS_PAGINATION', DEFAULT_PAGINATION)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(project__isnull=True)
+
+
 class ProjectBackgroundJobView(
     LoginRequiredMixin,
     LoggedInPermissionMixin,

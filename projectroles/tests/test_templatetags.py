@@ -429,7 +429,7 @@ class TestProjectrolesTemplateTags(TestTemplateTagsBase):
 
     def test_get_site_apps(self):
         """Test get_site_apps()"""
-        self.assertEqual(len(tags.get_site_apps()), 6)
+        self.assertEqual(len(tags.get_site_apps()), 7)
 
     # TODO: Test get_site_app_messages() (set up admin alert)
 

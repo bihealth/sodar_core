@@ -58,3 +58,6 @@ rules.add_perm(
     'bgjobs.update_bgjob_all',
     pr_rules.is_project_owner | pr_rules.is_project_delegate,
 )
+
+# Allow viewing site-global background jobs (not project-specific).
+rules.add_perm('bgjobs.site_view_data', rules.is_superuser)

@@ -20,8 +20,12 @@
         {% if not object_list %}
           <tr>
             <td class="bg-faded font-italic text-center" colspan="5">
-              No background jobs found for
-              {% if related_type  %}{{ related_type }}{% else %}{% get_display_name 'PROJECT' %}{% endif %}.
+              {% if project %}
+                No background jobs found for
+                {% if related_type  %}{{ related_type }}{% else %}{% get_display_name 'PROJECT' %}{% endif %}.
+              {% else %}
+                No global background jobs found.
+              {% endif %}
             </td>
           </tr>
         {% endif %}

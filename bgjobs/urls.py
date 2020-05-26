@@ -27,4 +27,10 @@ urlpatterns = [
         view=views.BackgroundJobClearAllView.as_view(),
         name='clear_all',
     ),
+    # List global background jobs.
+    url(
+        regex=r'^list$',
+        view=views.GlobalBackgroundJobView.as_view(),
+        name='site_list',
+    ),
 ]

@@ -1,0 +1,28 @@
+{% extends 'projectroles/project_base.html' %}
+{% load projectroles_common_tags %}
+{% load rules %}
+{% load crispy_forms_tags %}
+{% comment %}{% load dict %}{% endcomment %}
+{% load rules %}
+{% load bgjobs_tags %}
+
+{% block title %}
+  Global Background Jobs
+{% endblock title %}
+
+{% block projectroles %}
+
+{% has_perm 'bgjobs.site_view_data' request.user project as can_view_data %}
+
+<div class="row sodar-subtitle-container">
+  <h3><i class="fa fa-tasks"></i> Background Jobs</h3>
+  {% if can_clear_own_jobs or can_clear_all_jobs %}
+    {% include 'bgjobs/_list_buttons.html' %}
+  {% endif %}
+</div>
+
+<div class="container-fluid sodar-page-container">
+  {% include 'bgjobs/_backgroundjob_list.html' %}
+</div>
+
+{% endblock projectroles %}
